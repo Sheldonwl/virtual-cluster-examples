@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "annotations": {},
+    "labels": {},
+    "name": "replace-import-cluster-name"
+  },
+  "spec": {
+    "clusterConfig": {
+      "importMode": "",
+      "proxy": {
+        "httpProxy": "",
+        "httpsProxy": "",
+        "noProxy": ""
+      }
+    },
+    "edgeConfig": {
+      "edgeHostUid": "",
+      "edgeHostUids": [
+        ""
+      ]
+    }
+  }
+}

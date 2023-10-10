@@ -1,0 +1,41 @@
+{
+    "metadata": {
+      "annotations": {},
+      "creationTimestamp": "2023-09-29T20:05:35.433Z",
+      "deletionTimestamp": "2023-09-29T20:05:35.433Z",
+      "labels": {},
+      "lastModifiedTimestamp": "2023-09-29T20:05:35.433Z",
+      "name": "replace-virtual-cluster-name",
+      "namespace": "",
+      "resourceVersion": "",
+      "selfLink": "",
+      "uid": ""
+    },
+    "spec": {
+      "clusterConfig": {
+        "controlPlaneHealthCheckTimeout": "",
+        "hostClusterConfig": {
+          "clusterGroup": {
+            "apiVersion": "",
+            "fieldPath": "",
+            "kind": "",
+            "name": "",
+            "namespace": "",
+            "resourceVersion": "",
+            "uid": "replace-cluster-group-uid"
+          }
+        }
+      },
+      "machinepoolconfig": [
+        {
+          "cloudConfig": {
+            "instanceType": {
+              "maxCPU": replace-cpu,
+              "maxMemInMiB": replace-memory,
+              "maxStorageGiB": replace-storage
+            }
+          }
+        }
+      ]
+    }
+  }
