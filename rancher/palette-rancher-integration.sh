@@ -70,7 +70,7 @@ if [ -z "$CREATE_VC_JSON" ]; then
 fi
 
 # Values used in the script
-echo "- Captured values:"
+echo "- Captured parameters:"
 echo "-- Virtual Cluster Name: $VIRTUAL_CLUSTER_NAME"
 echo "-- New Imported Cluster Name: $IMPORTED_VC_CLUSTER_NAME_IN_RANCHER"
 echo "-- Cluster Group UID: $CLUSTER_GROUP_UID"
@@ -97,7 +97,10 @@ VC_UID=$(curl -L -X POST "${PALETTE_API_ENDPOINT}/spectroclusters/virtual" \
 -H "ProjectUid: ${PALETTE_PROJECT_UID}" \
 --data-raw "${GENERATED_CREATE_VC_JSON}"  | jq -r '.uid')
 
-echo -e "\nVirtual Cluster UID: $VC_UID\n"
+# sed -i -e 's/.*"uid":"\([^"]*\)".*/\1/' $GEN_VC_UID - working
+# sed -i -e 's/.*"uid":"\([^"]*\)".*/cluster-\1/' $GEN_VC_UID
+
+# VC_UID=$(cat $GEN_VC_UID) - working
 
 # ------------------------------------------------------------
 # Get VC kube-config
@@ -128,9 +131,8 @@ done
 # Label Virtual Cluster Namespace - test user - this is just an example
 # ------------------------------------------------------------
 
-echo -e "- Label Virtual Cluster base namespace via Palette on host cluster with example labels - $HOST_CLUSTER_NAME_IN_RANCHER \n"
+echo -e "- Label Virtual Cluster base namespace via Palette on host cluster with test user Bob - $HOST_CLUSTER_NAME_IN_RANCHER \n"
 
-# Label with test vc-cluster-name and user test labels
 kubectl --kubeconfig $PALETTE_HOST_KUBE_CONFIG label namespace cluster-$VC_UID vc-cluster-name=$VIRTUAL_CLUSTER_NAME user=$USER
 
 # ------------------------------------------------------------
