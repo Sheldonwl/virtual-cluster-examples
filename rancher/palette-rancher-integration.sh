@@ -62,7 +62,7 @@ fi
 echo "- Captured parameters:"
 echo "-- Virtual Cluster Name: $VIRTUAL_CLUSTER_NAME"
 echo "-- New Imported Cluster Name: $IMPORTED_VC_CLUSTER_NAME_IN_RANCHER"
-echo "-- Cluster Group UID: $CLUSTER_GROUP_UID"
+echo "-- Cluster Group UID: $PALETTE_CLUSTER_GROUP_UID"
 echo "-- Virtual Cluster resources:"
 echo "--- CPU: $VC_CPU"
 echo "--- Memory in MB: $VC_MEMORY_MB"
@@ -70,7 +70,7 @@ echo -e "--- Disk size: $VC_STORAGE_GB \n"
 
 # Replace the placeholders with the new values and store the result in a new file
 sed -e "s/replace-virtual-cluster-name/${VIRTUAL_CLUSTER_NAME}/g" \
-        -e "s/replace-cluster-group-uid/${CLUSTER_GROUP_UID}/g" \
+        -e "s/replace-cluster-group-uid/${PALETTE_CLUSTER_GROUP_UID}/g" \
         -e "s/replace-cpu/${VC_CPU}/g" \
         -e "s/replace-memory/${VC_MEMORY_MB}/g" \
         -e "s/replace-storage/${VC_STORAGE_GB}/g" \
@@ -120,7 +120,7 @@ done
 # Label Virtual Cluster Namespace - test user - this is just an example
 # ------------------------------------------------------------
 
-echo -e "- Label Virtual Cluster base namespace via Palette on host cluster with test user Bob - $HOST_CLUSTER_NAME_IN_RANCHER \n"
+echo -e "- Label Virtual Cluster base namespace via Palette on host cluster with test user Bob - $RANCHER_HOST_CLUSTER_NAME \n"
 
 kubectl --kubeconfig $PALETTE_HOST_KUBE_CONFIG label namespace cluster-$VC_UID vc-cluster-name=$VIRTUAL_CLUSTER_NAME user=$USER
 
@@ -129,9 +129,9 @@ kubectl --kubeconfig $PALETTE_HOST_KUBE_CONFIG label namespace cluster-$VC_UID v
 # ------------------------------------------------------------
 
 # Get Cluster ID of host cluster in Rancher
-CLUSTER_ID=$(curl -s -X GET "$RANCHER_API_URL/clusters?name=$HOST_CLUSTER_NAME_IN_RANCHER" \
+CLUSTER_ID=$(curl -s -X GET "$RANCHER_API_URL/clusters?name=$RANCHER_HOST_CLUSTER_NAME" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer $RANCHER_BEARER_TOKEN" | jq -r '.data[] | select(.name=="'$HOST_CLUSTER_NAME_IN_RANCHER'") | .id')
+    -H "Authorization: Bearer $RANCHER_BEARER_TOKEN" | jq -r '.data[] | select(.name=="'$RANCHER_HOST_CLUSTER_NAME'") | .id')
 
 # Check if cluster ID was found
 if [ -z "$CLUSTER_ID" ]; then
