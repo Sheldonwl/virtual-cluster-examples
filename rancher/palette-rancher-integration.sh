@@ -5,7 +5,7 @@
 # ------------------------------------------------------------
 
 # - Import Host cluster into Rancher (if not created and already available in Rancher)
-# - Import Host Cluster into Tenant Admin Prject - So we can create Virtual Cluster on that host
+# - Import Host Cluster into Tenant Admin Project - So we can create Virtual Cluster on that host
 # - Create a Project in Palette
 # - Create a Cluster Group in Tenant Admin (if you're cluster was also imported into Tenant Admin)
 # - Rancher CLI
@@ -29,7 +29,7 @@ while read -r line || [ -n "$line" ]; do
     fi
 done < .env
 
-# Run-time parameters, can be used to customise the script when run. All variables have a default value.
+# Run-time parameters, can be used to customize the script when run. All variables have a default value.
 VIRTUAL_CLUSTER_NAME=${1:-test} # Default = test
 IMPORTED_VC_CLUSTER_NAME_IN_RANCHER=${2:-imported-$VIRTUAL_CLUSTER_NAME} # Default = imported-test
 
@@ -194,10 +194,10 @@ UPDATED_PROJECT_ID=$(curl -s -X GET "$RANCHER_API_URL/clusters/$CLUSTER_ID/names
 if [ "$UPDATED_PROJECT_ID" == "$PROJECT_ID" ]; then
     echo -e "- Namespace imported into project $RANCHER_PROJECT_NAME_PREFIX-$VIRTUAL_CLUSTER_NAME successfully \n"
 else
-    echo -e "* Failed to import namespace into project \n"
+    echo -e "* Failed to import namespace $PROJECT_ID into project $RANCHER_PROJECT_NAME_PREFIX-$VIRTUAL_CLUSTER_NAME \n"
 fi
 
-echo -e "- Rancher Project $RANCHER_PROJECT_NAME_PREFIX-$VIRTUAL_CLUSTER_NAME succesfully annotated with - $UPDATED_PROJECT_ID \n"
+echo -e "- Rancher Project $RANCHER_PROJECT_NAME_PREFIX-$VIRTUAL_CLUSTER_NAME successfully annotated with - $UPDATED_PROJECT_ID \n"
 
 # ------------------------------------------------------------
 # Import Virtual Cluster into Rancher
@@ -205,7 +205,7 @@ echo -e "- Rancher Project $RANCHER_PROJECT_NAME_PREFIX-$VIRTUAL_CLUSTER_NAME su
 
 echo -e "- Import Virtual Cluster $VIRTUAL_CLUSTER_NAME into Rancher \n"
 
-# Login and select a project. You need to select a project when loging in, so this forces the login to choose the first choice. 
+# Login and select a project. You need to select a project when logging in, so this forces the login to choose the first choice. 
 echo 1 | rancher login $RANCHER_URL --token $RANCHER_BEARER_TOKEN
 
 # Create Generic Imported cluster
@@ -230,4 +230,4 @@ echo -e "- Waiting for cluster - $IMPORTED_VC_CLUSTER_NAME_IN_RANCHER to provisi
 # Wait for imported cluster to come up 
 rancher wait $IMPORTED_VC_CLUSTER_NAME_IN_RANCHER
 
-echo "Succesfully completed script"
+echo "Successfully completed script"
