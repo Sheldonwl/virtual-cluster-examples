@@ -2,4 +2,4 @@
 
 # Ignore environment variables file
 .env
-
+palette-virtual-cluster-host.yaml
