@@ -11,10 +11,10 @@
 # - Rancher CLI
 # - Kubectl 
 
-# Required files (these file names are configurable in the section below): 
+# Required files - available in git repo (these file names are configurable in the section below): 
 # - create-vc.json (must contain create-vc.json contents)
 # - create-import-cluster.json (must contain create-import-cluster.json contents)
-# - palette-virtual-cluster-host.yaml (must contain kube-config for host cluster, name can be changed in PALETTE_HOST_KUBE_CONFIG)
+# - palette-virtual-cluster-host-config.yaml (must contain kube-config for host cluster, name can be changed in PALETTE_HOST_KUBE_CONFIG)
 
 # ------------------------------------------------------------
 # Variables
@@ -86,10 +86,7 @@ VC_UID=$(curl -L -X POST "${PALETTE_API_ENDPOINT}/spectroclusters/virtual" \
 -H "ProjectUid: ${PALETTE_PROJECT_UID}" \
 --data-raw "${GENERATED_CREATE_VC_JSON}"  | jq -r '.uid')
 
-# sed -i -e 's/.*"uid":"\([^"]*\)".*/\1/' $GEN_VC_UID - working
-# sed -i -e 's/.*"uid":"\([^"]*\)".*/cluster-\1/' $GEN_VC_UID
-
-# VC_UID=$(cat $GEN_VC_UID) - working
+echo "Cluster UID: $VC_UID"
 
 # ------------------------------------------------------------
 # Get VC kube-config
@@ -112,7 +109,7 @@ while [ "$SUCCESS" != true ]; do
     echo -e "- Virtual Cluster kube-config successfully received, file saved to $GEN_VC_ADMIN_CONF \n"
   else
     echo "* Waiting for VC. Status $HTTP_STATUS, retrying..."
-    sleep 15  # Pause for 10 seconds before retrying
+    sleep 15  # Pause for 15 seconds before retrying
   fi
 done
 
@@ -120,7 +117,7 @@ done
 # Label Virtual Cluster Namespace - test user - this is just an example
 # ------------------------------------------------------------
 
-echo -e "- Label Virtual Cluster base namespace via Palette on host cluster with test user Bob - $RANCHER_HOST_CLUSTER_NAME \n"
+echo -e "- Label Virtual Cluster namespace via Palette on host cluster with test user Bob on $RANCHER_HOST_CLUSTER_NAME Rancher cluster\n"
 
 kubectl --kubeconfig $PALETTE_HOST_KUBE_CONFIG label namespace cluster-$VC_UID vc-cluster-name=$VIRTUAL_CLUSTER_NAME user=$USER
 
